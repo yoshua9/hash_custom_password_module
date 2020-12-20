@@ -1,9 +1,24 @@
-# Tot-em Module
+Crear un módulo para PrestaShop que permita mostrar en todas las páginas de la
+tienda un mensaje de bienvenida personalizado para cada cliente:
+Si el cliente está logeado, la plantilla debería mostrar algo así en un bloque o div:
 
-3. Por último, en Prestashop es obligatorio el nombre y apellidos de un usuario al realizar el registro en el checkout cuando un usuario compra. Para agilizar la conversión reduciendo campos, quiero que el usuario no introduzca su nombre ni apellidos, realiza los cambios que creas pertinentes justificando el por qué.
-Explicación: Se ha optado por modificar el fichero themes\classic\templates\checkout\_partials\customer-form.tpl para que los dos campos estuvieran ocultos para el usuario en el checkout. En el caso de modificar la obligatorierdad se ha generado un override en la siguiente ruta: override\classes\form\CustomerFormatter.php y aprovechando se han también puesto opcionales otros campos como el password y el optin. Por último, ha sido necesario modificar en el Objeto Customer el modelo del mismo eliminando la obligatoriedad del campo Firstname y Lastname, ruta: override\classes\form\CustomerFormatter.php
-1. Mejorar la codificación actual de la contraseña de prestashop personalizándola ligeramente y haciendo que se aleje del estándar.
-En el lado de personalizar el hasheo de la contraseña por defecto de prestashop, concatenando 3 letras personalizadas que permiten aumentar de por si la dificultad para romper la encriptación mediante ataques. Otra alternativa hubiera sido utilizar otro logaritmo de hasheo en vez de MD5. El override se sitúa en la siguiente ruta: override\classes\Tools.php
-2. Las contraseñas existentes hasta el momento del cambio estarán en la codificación antigua por lo que no debería dejar logarte, por lo que deberemos regenerar contraseña para poder entrar. El módulo deberá capturar el evento de actualizar la contraseña de un usuario y en ese momento guardar un registro a modo de log en una tabla custom que crees en bbdd. Guardaremos usuario, nueva pass, hora de la actualización. He anclado el modulo que he generado al hook “hookActionPasswordRenew” al lanzarse se realiza el guardado de la password hasheada y también existe la opción de guardar la contraseña sin hashear pero por motivos de seguridad no he optado por esa opción.
-Para poder probarlo o bien permites el envío de emails con el enlace para recuperar la contraseña y así regenerarla nuevamente o bien tendrás que agregar en la siguiente ruta: controllers\front\PasswordController.php Línea 78 un bloque similar al siguiente, de manera puntual (solo si no puede enviar emails desde la plataforma): var_dump($this->context->link->getPageLink('password', true, null, 'token=' . $customer->secure_key . '&id_customer=' . (int) $customer->id . '&reset_token=' . $customer->reset_password_token));die;
-Antes de instalar el módulo debe tener, o bien, generar varios usuarios con sus respectivas contraseñas, para posteriormente poder validar que no le permite loguear al instalar el modulo. Y finalmente, regenerar la contraseña de nuevo con el nuevo hasheo, aunque también lo puede realizar con usuarios nuevos, solicitando regenerársela a ellos también. “Solo guarda en el log cuando es regeneración, no si se crea desde 0” Obviamente después de generar las contraseñas con la nueva función de hash() personalizada la contraseñas no volverán a funcionar y será necesaria adaptarlas al hasheo estándar y nativo de prestashop.
+---
+
+Hola Yoshua Lino,
+{Mensaje configurable}
+
+---
+
+## Y si no está logeado:
+
+Hola Invitado,
+{Mensaje configurable}
+Importante:
+• El mensaje se puede personalizar desde la configuración del módulo con editor de texto para poner colores, negritas, etc.
+• Además, en la configuración del módulo es necesario que aparezca una opción que permita mostrar u ocultar este mensaje a
+conveniencia del administrador.
+• Por último, en la página del producto mostrar un botón por debajo del botón “Añadir al carrito” que permita abrir una ventana
+Bootstrap modal con un formulario sencillo que permita al cliente enviar un mensaje al administrador que quede registrado en el
+servicio de atención al cliente.
+• Nos debes enviar a nuestro email un archivo comprimido que se pueda instalar en PrestaShop 1.7.x para ver el resultado de tu prueba.
+• Se valorará desarrollo propio.
